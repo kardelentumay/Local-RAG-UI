@@ -28,6 +28,9 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [notice, setNotice] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [selectedModel, setSelectedModel] = useState("qwen2.5-1.5b");
+  const [selectedLanguage, setSelectedLanguage] = useState("Otomatik algıla");
+  const [openDropdown, setOpenDropdown] = useState<"model" | "language" | null>(null);
   const [answerLength, setAnswerLength] = useState("Normal");
   const [documentsOpen, setDocumentsOpen] = useState(true);
   const [libraryOpen, setLibraryOpen] = useState(true);
@@ -69,15 +72,23 @@ export default function Home() {
           </div>
         </div>
         <div className="top-actions">
-          <span className="privacy-status"><i /> Çevrimdışı · Veriler bu cihazda</span>
           <button className="model-button" onClick={() => setSettingsOpen(true)}>
-            qwen2.5-1.5b <span>⌄</span>
+            {selectedModel} <span>⌄</span>
           </button>
         </div>
       </header>
 
       <div className={`workspace ${libraryOpen ? "left-open" : ""} ${sourcesOpen ? "right-open" : ""}`}>
         {libraryOpen && <aside className="library-panel">
+          <button
+            className="sidebar-toggle inside-toggle left-inside direction-left"
+            type="button"
+            onClick={() => setLibraryOpen(false)}
+            aria-label="Sol paneli kapat"
+            title="Sol paneli kapat"
+          >
+            <img src="/sidebar-toggle.svg" alt="" />
+          </button>
           <section className="sidebar-section chat-history-section">
             <div className="panel-heading">
               <div>
@@ -118,7 +129,7 @@ export default function Home() {
                 aria-expanded={documentsOpen}
                 onClick={() => setDocumentsOpen((current) => !current)}
               >
-               ⌄
+                <img src="/category-dropdown.svg" alt="" />
               </button>
             </div>
 
@@ -149,26 +160,28 @@ export default function Home() {
         </aside>}
 
         <section className="chat-panel">
-          <div className="sidebar-controls" aria-label="Yan paneller">
+          {!libraryOpen && (
             <button
+              className="sidebar-toggle collapsed-toggle left-collapsed direction-right"
               type="button"
-              onClick={() => setLibraryOpen((current) => !current)}
-              aria-label={libraryOpen ? "Sol paneli kapat" : "Sol paneli aç"}
-              aria-expanded={libraryOpen}
-              title={libraryOpen ? "Sol paneli kapat" : "Sol paneli aç"}
+              onClick={() => setLibraryOpen(true)}
+              aria-label="Sol paneli aç"
+              title="Sol paneli aç"
             >
-              {libraryOpen ? "←" : "→"}
+              <img src="/sidebar-toggle.svg" alt="" />
             </button>
+          )}
+          {!sourcesOpen && (
             <button
+              className="sidebar-toggle collapsed-toggle right-collapsed direction-left"
               type="button"
-              onClick={() => setSourcesOpen((current) => !current)}
-              aria-label={sourcesOpen ? "Kaynaklar panelini kapat" : "Kaynaklar panelini aç"}
-              aria-expanded={sourcesOpen}
-              title={sourcesOpen ? "Kaynaklar panelini kapat" : "Kaynaklar panelini aç"}
+              onClick={() => setSourcesOpen(true)}
+              aria-label="Kaynaklar panelini aç"
+              title="Kaynaklar panelini aç"
             >
-              {sourcesOpen ? "→" : "←"}
+              <img src="/sidebar-toggle.svg" alt="" />
             </button>
-          </div>
+          )}
           <div className="chat-content">
             <div className="assistant-message">
               <img src="/assistant-icon.png" alt="Lila chatbot" />
@@ -231,6 +244,15 @@ export default function Home() {
         </section>
 
         {sourcesOpen && <aside className="source-panel">
+          <button
+            className="sidebar-toggle inside-toggle right-inside direction-right"
+            type="button"
+            onClick={() => setSourcesOpen(false)}
+            aria-label="Kaynaklar panelini kapat"
+            title="Kaynaklar panelini kapat"
+          >
+            <img src="/sidebar-toggle.svg" alt="" />
+          </button>
           <div className="source-heading">
             <div><span className="eyebrow">Kaynaklar</span></div>
             <span className="source-count">2</span>
@@ -271,14 +293,74 @@ export default function Home() {
       </div>
 
       {settingsOpen && (
-        <div className="modal-backdrop" onMouseDown={() => setSettingsOpen(false)}>
+        <div className="modal-backdrop" onMouseDown={() => { setSettingsOpen(false); setOpenDropdown(null); }}>
           <section className="settings-modal" onMouseDown={(event) => event.stopPropagation()} aria-modal="true" role="dialog" aria-label="Yanıt ayarları">
-            <div className="modal-heading"><div><span className="eyebrow">Yerel çalışma</span><h2>Yanıt ayarları</h2></div><button onClick={() => setSettingsOpen(false)}>×</button></div>
-            <label>Model<select defaultValue="qwen2.5-1.5b"><option>qwen2.5-1.5b</option><option>qwen2.5-0.5b</option></select></label>
-            <label>Yanıt dili<select defaultValue="auto"><option value="auto">Otomatik algıla</option><option>Türkçe</option><option>English</option></select></label>
+            <div className="modal-heading"><div><span className="eyebrow">Yerel çalışma</span><h2>Yanıt ayarları</h2></div><button onClick={() => { setSettingsOpen(false); setOpenDropdown(null); }}>×</button></div>
+
+            <label className="settings-field">
+              <span>Model</span>
+              <div className={`custom-select ${openDropdown === "model" ? "is-open" : ""}`}>
+                <button
+                  type="button"
+                  className="select-trigger"
+                  aria-haspopup="listbox"
+                  aria-expanded={openDropdown === "model"}
+                  onClick={() => setOpenDropdown((current) => current === "model" ? null : "model")}
+                >
+                  <span>{selectedModel}</span><i>⌄</i>
+                </button>
+                {openDropdown === "model" && (
+                  <div className="select-menu" role="listbox" aria-label="Model seçenekleri">
+                    {["qwen2.5-1.5b", "qwen2.5-0.5b"].map((model) => (
+                      <button
+                        type="button"
+                        role="option"
+                        aria-selected={selectedModel === model}
+                        className={selectedModel === model ? "is-selected" : ""}
+                        key={model}
+                        onClick={() => { setSelectedModel(model); setOpenDropdown(null); }}
+                      >
+                        <span>{model}</span><b>{selectedModel === model ? "✓" : ""}</b>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </label>
+
+            <label className="settings-field">
+              <span>Yanıt dili</span>
+              <div className={`custom-select ${openDropdown === "language" ? "is-open" : ""}`}>
+                <button
+                  type="button"
+                  className="select-trigger"
+                  aria-haspopup="listbox"
+                  aria-expanded={openDropdown === "language"}
+                  onClick={() => setOpenDropdown((current) => current === "language" ? null : "language")}
+                >
+                  <span>{selectedLanguage}</span><i>⌄</i>
+                </button>
+                {openDropdown === "language" && (
+                  <div className="select-menu" role="listbox" aria-label="Yanıt dili seçenekleri">
+                    {["Otomatik algıla", "Türkçe", "English"].map((language) => (
+                      <button
+                        type="button"
+                        role="option"
+                        aria-selected={selectedLanguage === language}
+                        className={selectedLanguage === language ? "is-selected" : ""}
+                        key={language}
+                        onClick={() => { setSelectedLanguage(language); setOpenDropdown(null); }}
+                      >
+                        <span>{language}</span><b>{selectedLanguage === language ? "✓" : ""}</b>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </label>
             <fieldset><legend>Yanıt uzunluğu</legend>{["Kısa", "Normal", "Ayrıntılı"].map((item) => <button key={item} className={answerLength === item ? "active" : ""} onClick={() => setAnswerLength(item)}>{item}</button>)}</fieldset>
             <div className="privacy-note"><b>Gizlilik koruması açık</b><p>Belgeler ve sorular bu cihazdan dışarı gönderilmez.</p></div>
-            <button className="save-settings" onClick={() => { setSettingsOpen(false); setNotice("Ayarlar demo için güncellendi."); }}>Ayarları uygula</button>
+            <button className="save-settings" onClick={() => { setSettingsOpen(false); setOpenDropdown(null); setNotice("Ayarlar demo için güncellendi."); }}>Ayarları uygula</button>
           </section>
         </div>
       )}
