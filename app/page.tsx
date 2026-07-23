@@ -74,8 +74,7 @@ export default function Home() {
           <section className="sidebar-section chat-history-section">
             <div className="panel-heading">
               <div>
-                <span className="eyebrow">Geçmiş</span>
-                <h1>Sohbetler</h1>
+                <span className="eyebrow">Geçmiş Sohbetler</span>
               </div>
               <button className="small-icon" aria-label="Yeni sohbet başlat" onClick={() => setNotice("Yeni sohbet başlatıldı.")}>＋</button>
             </div>
@@ -98,15 +97,13 @@ export default function Home() {
           <section className="sidebar-section documents-section">
             <div className="panel-heading">
               <div>
-                <span className="eyebrow">Bilgi alanı</span>
-                <h2>Belgelerim</h2>
+                <span className="eyebrow">Belgelerim</span>
               </div>
               <button className="heading-upload" aria-label="Dosya ekle" onClick={simulateUpload}>＋</button>
             </div>
 
             <div className="collection-row">
               <span><b>RAG araştırmaları</b><small>{documents.length} belge</small></span>
-              <button aria-label="Koleksiyon seçenekleri">•••</button>
             </div>
 
             <div className="document-list">
@@ -130,10 +127,6 @@ export default function Home() {
               ))}
             </div>
 
-            <div className="library-footer">
-              <div><span>{activeCount}</span><small>etkin belge</small></div>
-              <div><span>1.692</span><small>indeksli parça</small></div>
-            </div>
           </section>
         </aside>
 

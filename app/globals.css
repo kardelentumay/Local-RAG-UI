@@ -89,7 +89,7 @@ body {
 .chat-heading { height: 80px; padding: 0 26px; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.75); }
 .panel-heading h1, .panel-heading h2, .chat-heading h2, .source-heading h2, .modal-heading h2 { margin: 3px 0 0; font-size: 19px; color: var(--navy); }
 .eyebrow { color: var(--purple); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .13em; }
-.small-icon, .collection-row button, .modal-heading button {
+.small-icon, .modal-heading button {
   border: 0; background: transparent; color: var(--navy); font-size: 21px;
 }
 .heading-upload {
@@ -154,14 +154,6 @@ body {
 .file-type.xlsx { color: #347258; background: #e5f3ec; }
 .ready-dot { width: 7px; height: 7px; border-radius: 50%; background: #c9c6d0; }
 .is-active .ready-dot { background: var(--success); }
-.library-footer {
-  margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; padding-top: 13px; border-top: 1px solid var(--line);
-}
-.library-footer div + div { border-left: 1px solid var(--line); padding-left: 16px; }
-.library-footer span, .library-footer small { display: block; }
-.library-footer span { color: var(--navy); font-size: 16px; font-weight: 700; }
-.library-footer small { color: var(--muted); font-size: 10px; margin-top: 3px; }
-
 .new-chat { border: 1px solid var(--line); background: var(--white); color: var(--purple); padding: 9px 12px; border-radius: 10px; font-weight: 650; font-size: 12px; }
 .chat-content { flex: 1; width: min(760px, calc(100% - 40px)); margin: 0 auto; padding: 28px 0 18px; }
 .assistant-message { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 18px; }
