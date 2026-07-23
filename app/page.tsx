@@ -30,7 +30,14 @@ export default function Home() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [answerLength, setAnswerLength] = useState("Normal");
   const [documentsOpen, setDocumentsOpen] = useState(true);
+  const [libraryOpen, setLibraryOpen] = useState(true);
+  const [sourcesOpen, setSourcesOpen] = useState(false);
   const activeCount = useMemo(() => documents.filter((item) => item.active).length, [documents]);
+
+  function showSource(source: 1 | 2) {
+    setSelectedSource(source);
+    setSourcesOpen(true);
+  }
 
   function submitQuestion(event: FormEvent) {
     event.preventDefault();
@@ -69,8 +76,8 @@ export default function Home() {
         </div>
       </header>
 
-      <div className="workspace">
-        <aside className="library-panel">
+      <div className={`workspace ${libraryOpen ? "left-open" : ""} ${sourcesOpen ? "right-open" : ""}`}>
+        {libraryOpen && <aside className="library-panel">
           <section className="sidebar-section chat-history-section">
             <div className="panel-heading">
               <div>
@@ -139,9 +146,29 @@ export default function Home() {
             )}
 
           </section>
-        </aside>
+        </aside>}
 
         <section className="chat-panel">
+          <div className="sidebar-controls" aria-label="Yan paneller">
+            <button
+              type="button"
+              onClick={() => setLibraryOpen((current) => !current)}
+              aria-label={libraryOpen ? "Sol paneli kapat" : "Sol paneli aç"}
+              aria-expanded={libraryOpen}
+              title={libraryOpen ? "Sol paneli kapat" : "Sol paneli aç"}
+            >
+              {libraryOpen ? "←" : "→"}
+            </button>
+            <button
+              type="button"
+              onClick={() => setSourcesOpen((current) => !current)}
+              aria-label={sourcesOpen ? "Kaynaklar panelini kapat" : "Kaynaklar panelini aç"}
+              aria-expanded={sourcesOpen}
+              title={sourcesOpen ? "Kaynaklar panelini kapat" : "Kaynaklar panelini aç"}
+            >
+              {sourcesOpen ? "→" : "←"}
+            </button>
+          </div>
           <div className="chat-content">
             <div className="assistant-message">
               <img src="/assistant-icon.png" alt="Lila chatbot" />
@@ -169,11 +196,11 @@ export default function Home() {
                   Geleneksel RAG, sabit bir retrieval–generation akışında en ilgili parçaları bulup yanıt üretir.
                   Agentic RAG ise sorguyu planlayan, sonuçların ilgisini değerlendiren ve gerektiğinde aramayı yineleyen
                   otonom ajanlar kullanır. Bu yapı, çok adımlı sorularda daha uyarlanabilir bir süreç sağlar.
-                  <button className="citation" onClick={() => setSelectedSource(1)}>[1]</button>
+                  <button className="citation" onClick={() => showSource(1)}>[1]</button>
                 </p>
                 <p>
                   Bunun karşılığında agentic yaklaşım daha fazla işlem süresi, bileşen ve hata kontrolü gerektirir.
-                  <button className="citation" onClick={() => setSelectedSource(2)}>[2]</button>
+                  <button className="citation" onClick={() => showSource(2)}>[2]</button>
                 </p>
                 <div className="message-actions">
                   <button onClick={() => setNotice("Yanıt panoya kopyalandı (demo).")}>Kopyala</button>
@@ -192,7 +219,7 @@ export default function Home() {
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Belgelerin hakkında bir soru sor..."
                 aria-label="Soru"
-                rows={2}
+                rows={1}
               />
               <div className="composer-controls">
                 <span><b>{activeCount}</b> belge içinde aranacak</span>
@@ -203,7 +230,7 @@ export default function Home() {
           </form>
         </section>
 
-        <aside className="source-panel">
+        {sourcesOpen && <aside className="source-panel">
           <div className="source-heading">
             <div><span className="eyebrow">Kaynaklar</span></div>
             <span className="source-count">2</span>
@@ -240,7 +267,7 @@ export default function Home() {
             </article>
           )}
 
-        </aside>
+        </aside>}
       </div>
 
       {settingsOpen && (
