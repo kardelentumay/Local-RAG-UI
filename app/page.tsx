@@ -29,6 +29,7 @@ export default function Home() {
   const [notice, setNotice] = useState("");
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [answerLength, setAnswerLength] = useState("Normal");
+  const [documentsOpen, setDocumentsOpen] = useState(true);
   const activeCount = useMemo(() => documents.filter((item) => item.active).length, [documents]);
 
   function submitQuestion(event: FormEvent) {
@@ -65,7 +66,6 @@ export default function Home() {
           <button className="model-button" onClick={() => setSettingsOpen(true)}>
             qwen2.5-1.5b <span>⌄</span>
           </button>
-          <button className="icon-button" aria-label="Ayarları aç" onClick={() => setSettingsOpen(true)}>⚙</button>
         </div>
       </header>
 
@@ -104,41 +104,44 @@ export default function Home() {
 
             <div className="collection-row">
               <span><b>RAG araştırmaları</b><small>{documents.length} belge</small></span>
+              <button
+                className={`category-toggle ${documentsOpen ? "is-open" : ""}`}
+                type="button"
+                aria-label={documentsOpen ? "Belge kategorisini kapat" : "Belge kategorisini aç"}
+                aria-expanded={documentsOpen}
+                onClick={() => setDocumentsOpen((current) => !current)}
+              >
+               ⌄
+              </button>
             </div>
 
-            <div className="document-list">
-              {documents.map((document) => (
-                <label className={`document-row ${document.active ? "is-active" : ""}`} key={document.name}>
-                  <input
-                    type="checkbox"
-                    checked={document.active}
-                    onChange={() =>
-                      setDocuments((current) =>
-                        current.map((item) =>
-                          item.name === document.name ? { ...item, active: !item.active } : item
+            {documentsOpen && (
+              <div className="document-list">
+                {documents.map((document) => (
+                  <label className={`document-row ${document.active ? "is-active" : ""}`} key={document.name}>
+                    <input
+                      type="checkbox"
+                      checked={document.active}
+                      onChange={() =>
+                        setDocuments((current) =>
+                          current.map((item) =>
+                            item.name === document.name ? { ...item, active: !item.active } : item
+                          )
                         )
-                      )
-                    }
-                  />
-                  <span className={`file-type ${document.kind}`}>{document.kind === "xlsx" ? "XLS" : document.kind.toUpperCase()}</span>
-                  <span className="document-copy"><b>{document.name}</b><small>{document.meta}</small></span>
-                  <span className="ready-dot" aria-label={document.active ? "Etkin" : "Devre dışı"} />
-                </label>
-              ))}
-            </div>
+                      }
+                    />
+                    <span className={`file-type ${document.kind}`}>{document.kind === "xlsx" ? "XLS" : document.kind.toUpperCase()}</span>
+                    <span className="document-copy"><b>{document.name}</b><small>{document.meta}</small></span>
+                    <span className="ready-dot" aria-label={document.active ? "Etkin" : "Devre dışı"} />
+                  </label>
+                ))}
+              </div>
+            )}
 
           </section>
         </aside>
 
         <section className="chat-panel">
-          <div className="chat-heading">
-            <div>
-              <span className="eyebrow">Yeni sohbet</span>
-              <h2>Belgelerine bir soru sor</h2>
-            </div>
-            <button className="new-chat" onClick={() => setNotice("Yeni sohbet başlatıldı.")}>＋ Yeni sohbet</button>
-          </div>
-
           <div className="chat-content">
             <div className="assistant-message">
               <img src="/assistant-icon.png" alt="Lila chatbot" />
@@ -202,7 +205,7 @@ export default function Home() {
 
         <aside className="source-panel">
           <div className="source-heading">
-            <div><span className="eyebrow">Kanıt görünümü</span><h2>Kaynaklar</h2></div>
+            <div><span className="eyebrow">Kaynaklar</span></div>
             <span className="source-count">2</span>
           </div>
 
@@ -237,14 +240,6 @@ export default function Home() {
             </article>
           )}
 
-          <div className="system-card">
-            <div className="system-title"><span>●</span><b>Sistem hazır</b></div>
-            <dl>
-              <div><dt>Embedding</dt><dd>qwen3-0.6b</dd></div>
-              <div><dt>Arama</dt><dd>Hibrit · top 2</dd></div>
-              <div><dt>Veritabanı</dt><dd>Yerel SQLite</dd></div>
-            </dl>
-          </div>
         </aside>
       </div>
 
