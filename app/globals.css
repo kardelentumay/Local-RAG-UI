@@ -92,6 +92,13 @@ body {
 .small-icon, .collection-row button, .modal-heading button {
   border: 0; background: transparent; color: var(--navy); font-size: 21px;
 }
+.heading-upload {
+  display: grid; place-items: center; width: 32px; height: 32px; padding: 0;
+  border: 0; border-radius: 50%; background: var(--purple); color: var(--white);
+  font-size: 20px; line-height: 1; box-shadow: 0 5px 14px rgba(125,65,166,.22);
+  transition: transform .2s ease, background .2s ease;
+}
+.heading-upload:hover { transform: translateY(-1px); background: #6d3596; }
 .sidebar-section { min-height: 0; padding: 19px 18px; }
 .chat-history-section { border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #fff 0%, #faf7fc 100%); overflow: hidden; }
 .documents-section { display: flex; flex-direction: column; overflow: hidden; }

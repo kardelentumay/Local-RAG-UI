@@ -101,14 +101,8 @@ export default function Home() {
                 <span className="eyebrow">Bilgi alanı</span>
                 <h2>Belgelerim</h2>
               </div>
-              <button className="small-icon" aria-label="Belge ara">⌕</button>
+              <button className="heading-upload" aria-label="Dosya ekle" onClick={simulateUpload}>＋</button>
             </div>
-
-            <button className="upload-zone" onClick={simulateUpload}>
-              <span className="upload-icon">＋</span>
-              <strong>Dosya ekle</strong>
-              <small>PDF, DOCX veya XLSX</small>
-            </button>
 
             <div className="collection-row">
               <span><b>RAG araştırmaları</b><small>{documents.length} belge</small></span>
