@@ -100,9 +100,9 @@ body {
 }
 .heading-upload:hover { transform: translateY(-1px); background: #6d3596; }
 .sidebar-section { min-height: 0; padding: 19px 18px; }
-.chat-history-section { border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #fff 0%, #faf7fc 100%); overflow: hidden; }
+.chat-history-section { display: flex; flex-direction: column; border-bottom: 1px solid var(--line); background: linear-gradient(180deg, #fff 0%, #faf7fc 100%); overflow: hidden; }
 .documents-section { display: flex; flex-direction: column; overflow: hidden; }
-.chat-history { display: grid; gap: 5px; margin-top: 15px; }
+.chat-history { display: grid; align-content: start; gap: 5px; margin-top: 15px; min-height: 0; overflow-y: auto; padding-right: 3px; }
 .history-row {
   width: 100%; display: grid; grid-template-columns: 25px minmax(0, 1fr); gap: 8px; align-items: center;
   border: 0; border-radius: 10px; padding: 6px 8px; text-align: left; background: transparent; color: var(--navy);
@@ -137,7 +137,10 @@ body {
 .collection-row b, .collection-row small, .document-copy b, .document-copy small, .source-file b, .source-file small { display: block; }
 .collection-row b { font-size: 13px; }
 .collection-row small, .document-copy small, .source-file small { color: var(--muted); font-size: 10px; margin-top: 3px; }
-.document-list { display: grid; gap: 5px; overflow-y: auto; padding-right: 2px; }
+.document-list { display: grid; align-content: start; flex: 1; min-height: 0; gap: 5px; overflow-y: auto; padding-right: 3px; }
+.chat-history, .document-list { scrollbar-width: thin; scrollbar-color: var(--lavender) transparent; }
+.chat-history::-webkit-scrollbar, .document-list::-webkit-scrollbar { width: 5px; }
+.chat-history::-webkit-scrollbar-thumb, .document-list::-webkit-scrollbar-thumb { background: var(--lavender); border-radius: 99px; }
 .document-row {
   display: grid; grid-template-columns: 16px 34px minmax(0, 1fr) 8px; align-items: center; gap: 8px;
   padding: 9px 7px; border-radius: 11px; transition: background .2s ease;
