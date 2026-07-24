@@ -129,11 +129,15 @@ body {
 .documents-section { display: flex; flex-direction: column; overflow: hidden; }
 .chat-history { display: grid; align-content: start; gap: 5px; margin-top: 15px; min-height: 0; overflow-y: auto; padding-right: 3px; }
 .history-row {
-  width: 100%; display: grid; grid-template-columns: 25px minmax(0, 1fr); gap: 8px; align-items: center;
-  border: 0; border-radius: 10px; padding: 6px 8px; text-align: left; background: transparent; color: var(--navy);
+  width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) 24px; gap: 4px; align-items: center;
+  border-radius: 10px; padding: 2px 5px 2px 6px; background: transparent; color: var(--navy);
 }
 .history-row:hover, .history-row.is-current { background: var(--white); box-shadow: 0 5px 18px rgba(44,47,85,.07); }
 .history-row.is-current { box-shadow: inset 3px 0 var(--purple), 0 5px 18px rgba(44,47,85,.07); }
+.history-main {
+  min-width: 0; display: grid; grid-template-columns: 25px minmax(0, 1fr); gap: 8px; align-items: center;
+  border: 0; padding: 4px 2px; text-align: left; background: transparent; color: inherit;
+}
 .history-icon { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; background: var(--soft-purple); color: var(--purple); }
 .history-copy { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 7px; }
 .history-row b { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 10px; }
@@ -190,13 +194,13 @@ body {
 .file-type.xlsx { color: #347258; background: #e5f3ec; }
 .ready-dot { width: 7px; height: 7px; border-radius: 50%; background: #c9c6d0; }
 .is-active .ready-dot { background: var(--success); }
-.delete-document {
+.delete-document, .delete-chat {
   display: grid; place-items: center; width: 24px; height: 24px; padding: 0;
   border: 0; border-radius: 7px; background: transparent; color: #9b91a4;
   font-size: 17px; line-height: 1; transition: color .18s ease, background .18s ease, transform .18s ease;
 }
-.delete-document:hover { color: #8e3e58; background: #f9e8e8; transform: scale(1.06); }
-.delete-document:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
+.delete-document:hover, .delete-chat:hover { color: #8e3e58; background: #f9e8e8; transform: scale(1.06); }
+.delete-document:focus-visible, .delete-chat:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
 .chat-content {
   flex: 1; min-height: 0; width: min(760px, calc(100% - 40px)); margin: 0 auto;
   padding: 28px 0 18px; overflow-y: auto; overscroll-behavior: contain;

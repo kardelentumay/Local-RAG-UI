@@ -9,6 +9,18 @@ type DocumentItem = {
   active: boolean;
 };
 
+type ChatItem = {
+  id: number;
+  title: string;
+  date: string;
+};
+
+const initialChats: ChatItem[] = [
+  { id: 1, title: "Agentic vs. traditional RAG", date: "Today" },
+  { id: 2, title: "RAGAS evaluation metrics", date: "Yesterday" },
+  { id: 3, title: "Corrective RAG summary", date: "Jul 21" },
+];
+
 const initialDocuments: DocumentItem[] = [
   { name: "RAG Evolution Survey.pdf", meta: "58 chunks · 4.2 MB", kind: "pdf", active: true },
   { name: "Corrective RAG.pdf", meta: "36 chunks · 1.8 MB", kind: "pdf", active: true },
@@ -23,6 +35,8 @@ const suggestions = [
 ];
 
 export default function Home() {
+  const [chats, setChats] = useState(initialChats);
+  const [activeChatId, setActiveChatId] = useState<number | null>(1);
   const [documents, setDocuments] = useState(initialDocuments);
   const [selectedSource, setSelectedSource] = useState<1 | 2>(1);
   const [query, setQuery] = useState("");
@@ -66,6 +80,14 @@ export default function Home() {
     setNotice(`${name} was removed from the document library.`);
   }
 
+  function deleteChat(id: number) {
+    const chat = chats.find((item) => item.id === id);
+    const remainingChats = chats.filter((item) => item.id !== id);
+    setChats(remainingChats);
+    if (activeChatId === id) setActiveChatId(remainingChats[0]?.id ?? null);
+    if (chat) setNotice(`“${chat.title}” was removed from chat history.`);
+  }
+
   return (
     <main className="app-shell">
       <header className="topbar">
@@ -102,18 +124,28 @@ export default function Home() {
               <button className="small-icon" aria-label="Start a new chat" onClick={() => setNotice("A new chat was started.")}>＋</button>
             </div>
             <nav className="chat-history" aria-label="Chat history">
-              <button className="history-row is-current">
-                <span className="history-icon">◌</span>
-                <span className="history-copy"><b>Agentic vs. traditional RAG</b><time>Today</time></span>
-              </button>
-              <button className="history-row">
-                <span className="history-icon">◌</span>
-                <span className="history-copy"><b>RAGAS evaluation metrics</b><time>Yesterday</time></span>
-              </button>
-              <button className="history-row">
-                <span className="history-icon">◌</span>
-                <span className="history-copy"><b>Corrective RAG summary</b><time>Jul 21</time></span>
-              </button>
+              {chats.map((chat) => (
+                <div className={`history-row ${activeChatId === chat.id ? "is-current" : ""}`} key={chat.id}>
+                  <button
+                    type="button"
+                    className="history-main"
+                    onClick={() => setActiveChatId(chat.id)}
+                    aria-label={`Open ${chat.title}`}
+                  >
+                    <span className="history-icon">◌</span>
+                    <span className="history-copy"><b>{chat.title}</b><time>{chat.date}</time></span>
+                  </button>
+                  <button
+                    type="button"
+                    className="delete-chat"
+                    aria-label={`Delete ${chat.title}`}
+                    title={`Delete ${chat.title}`}
+                    onClick={() => deleteChat(chat.id)}
+                  >
+                    ×
+                  </button>
+                </div>
+              ))}
             </nav>
           </section>
 
