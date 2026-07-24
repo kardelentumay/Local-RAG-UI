@@ -175,7 +175,7 @@ body {
 .chat-history::-webkit-scrollbar, .document-list::-webkit-scrollbar { width: 5px; }
 .chat-history::-webkit-scrollbar-thumb, .document-list::-webkit-scrollbar-thumb { background: var(--lavender); border-radius: 99px; }
 .document-row {
-  display: grid; grid-template-columns: 16px 34px minmax(0, 1fr) 8px; align-items: center; gap: 8px;
+  display: grid; grid-template-columns: 16px 34px minmax(0, 1fr) 8px 24px; align-items: center; gap: 8px;
   padding: 9px 7px; border-radius: 11px; transition: background .2s ease;
 }
 .document-row:hover, .document-row.is-active { background: #f8f5fa; }
@@ -190,6 +190,13 @@ body {
 .file-type.xlsx { color: #347258; background: #e5f3ec; }
 .ready-dot { width: 7px; height: 7px; border-radius: 50%; background: #c9c6d0; }
 .is-active .ready-dot { background: var(--success); }
+.delete-document {
+  display: grid; place-items: center; width: 24px; height: 24px; padding: 0;
+  border: 0; border-radius: 7px; background: transparent; color: #9b91a4;
+  font-size: 17px; line-height: 1; transition: color .18s ease, background .18s ease, transform .18s ease;
+}
+.delete-document:hover { color: #8e3e58; background: #f9e8e8; transform: scale(1.06); }
+.delete-document:focus-visible { outline: 2px solid var(--purple); outline-offset: 2px; }
 .chat-content {
   flex: 1; min-height: 0; width: min(760px, calc(100% - 40px)); margin: 0 auto;
   padding: 28px 0 18px; overflow-y: auto; overscroll-behavior: contain;
@@ -260,7 +267,7 @@ body {
 .demo-notice button { border: 0; background: transparent; color: var(--navy); }
 
 .source-heading { margin-bottom: 18px; }
-.source-count { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--soft-purple); color: var(--purple); font-weight: 800; }
+.source-count { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--soft-purple); color: var(--purple); font-size: 12px; font-weight: 800; }
 .source-tabs { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--line); }
 .source-tabs button { border: 0; border-bottom: 2px solid transparent; padding: 10px; background: transparent; color: var(--muted); font-size: 11px; }
 .source-tabs button.active { color: var(--purple); border-color: var(--purple); font-weight: 700; }

@@ -61,6 +61,11 @@ export default function Home() {
     setNotice("New Report.pdf was processed successfully and split into 31 chunks.");
   }
 
+  function deleteDocument(name: string) {
+    setDocuments((current) => current.filter((document) => document.name !== name));
+    setNotice(`${name} was removed from the document library.`);
+  }
+
   return (
     <main className="app-shell">
       <header className="topbar">
@@ -136,10 +141,11 @@ export default function Home() {
             {documentsOpen && (
               <div className="document-list">
                 {documents.map((document) => (
-                  <label className={`document-row ${document.active ? "is-active" : ""}`} key={document.name}>
+                  <div className={`document-row ${document.active ? "is-active" : ""}`} key={document.name}>
                     <input
                       type="checkbox"
                       checked={document.active}
+                      aria-label={`Use ${document.name} in search`}
                       onChange={() =>
                         setDocuments((current) =>
                           current.map((item) =>
@@ -151,7 +157,16 @@ export default function Home() {
                     <span className={`file-type ${document.kind}`}>{document.kind === "xlsx" ? "XLS" : document.kind.toUpperCase()}</span>
                     <span className="document-copy"><b>{document.name}</b><small>{document.meta}</small></span>
                     <span className="ready-dot" aria-label={document.active ? "Active" : "Inactive"} />
-                  </label>
+                    <button
+                      type="button"
+                      className="delete-document"
+                      aria-label={`Delete ${document.name}`}
+                      title={`Delete ${document.name}`}
+                      onClick={() => deleteDocument(document.name)}
+                    >
+                      ×
+                    </button>
+                  </div>
                 ))}
               </div>
             )}
